@@ -28,9 +28,5 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store, null, () => {
-  console.log(
-    '✅ Redux Persist State after rehydration:',
-    store.getState().contacts
-  );
-});
+export const persistor = persistStore(store);
+
