@@ -2,41 +2,24 @@ import { configureStore } from '@reduxjs/toolkit';
 import { contactsReducer } from './contactsSlice';
 import { filterReducer } from './filterSlice';
 import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore, createTransform } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from 'redux';
 
-const contactsTransform = createTransform(
-  inboundState => {
-    return Array.isArray(inboundState) ? inboundState : [];
-  },
-  outboundState => {
-    if (!Array.isArray(outboundState)) {
-      return [];
-    }
-    return outboundState;
-  },
-  { whitelist: ['contacts'] }
-);
-
-
-const contactsPersistConfig = {
+const persistConfig = {
   key: 'contacts',
   storage,
-  transforms: [contactsTransform], 
+  blacklist: ['filter'],
 };
 
-const persistedContactsReducer = persistReducer(
-  contactsPersistConfig,
-  contactsReducer
-);
-
 const rootReducer = combineReducers({
-  contacts: persistedContactsReducer, 
+  contacts: contactsReducer,
   filter: filterReducer,
 });
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

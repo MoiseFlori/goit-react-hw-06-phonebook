@@ -2,13 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 import {contactData} from './constants.js';
 
-const initialState = contactData; 
-
-console.log("Initial state before Redux Persist:", initialState); // Debugging
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState,
+  initialState: contactData,
   reducers: {
     addContact: {
       reducer(state, action) {
