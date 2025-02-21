@@ -3,6 +3,7 @@ import styles from './ContactList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from '../../redux/contactsSlice';
 import { selectFilteredContacts } from '../../redux/selectors';
+import PropTypes from 'prop-types'
 
 const ContactList = () => {
   const contacts = useSelector(selectFilteredContacts);
@@ -26,4 +27,13 @@ const ContactList = () => {
   );
 };
 
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      phoneNumber: PropTypes.string.isRequired,
+    }),
+  ),
+};
 export default ContactList;
